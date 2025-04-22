@@ -1,0 +1,68 @@
+/* Estilos para la aplicación Ztake Casino */
+
+/* Fondo principal */
+.background {
+    -fx-background-color: #20201f;
+}
+
+/* Estilos para las etiquetas de título */
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 22px;
+}
+
+/* Estilos para las etiquetas de texto normales */
+.text-label {
+    -fx-text-fill: white;
+}
+
+/* Estilos para los campos de texto */
+.input-field {
+    -fx-background-color: #2A2A2A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #888888;
+    -fx-pref-height: 40px;
+}
+
+/* Estilos para los checkbox */
+.check-box {
+    -fx-text-fill: white;
+}
+
+.check-box .box {
+    -fx-background-color: #2A2A2A;
+    -fx-border-color: #888888;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* Estilos para los enlaces */
+.link {
+    -fx-text-fill: #3498DB;
+}
+
+.link:hover {
+    -fx-text-fill: #5DADE2;
+}
+
+/* Estilos para el botón de login */
+.login-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 40px;
+}
+
+.login-button:hover {
+    -fx-background-color: #5DADE2;
+}
+
+/* Estilos para mensajes de error */
+.error-label {
+    -fx-text-fill: #E74C3C;
+    -fx-font-size: 12px;
+}
