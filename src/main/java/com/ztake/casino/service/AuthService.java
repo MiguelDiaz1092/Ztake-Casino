@@ -34,4 +34,14 @@ public interface AuthService {
      * @return true si se pudo enviar el correo de recuperación, false si no
      */
     boolean recoverPassword(String email);
+
+    /**
+     * Cambia la contraseña de un usuario.
+     *
+     * @param user usuario cuya contraseña se cambiará
+     * @param currentPassword contraseña actual
+     * @param newPassword nueva contraseña
+     * @return true si el cambio fue exitoso, false si no
+     */
+    boolean changePassword(User user, String currentPassword, String newPassword);
 }

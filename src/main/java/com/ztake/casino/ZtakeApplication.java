@@ -1,25 +1,37 @@
 package com.ztake.casino;
 
-import com.ztake.casino.repository.UserRepository;
-import com.ztake.casino.repository.UserRepositoryImpl;
-import com.ztake.casino.service.AuthService;
-import com.ztake.casino.service.AuthServiceImpl;
+import com.ztake.casino.config.DatabaseConfig;
+import com.ztake.casino.repository.*;
+import com.ztake.casino.service.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.logging.Logger;
+
 /**
  * Clase principal de la aplicación Ztake Casino.
  */
 public class ZtakeApplication extends Application {
+    private static final Logger LOGGER = Logger.getLogger(ZtakeApplication.class.getName());
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Inicializar el repositorio y servicios
         UserRepository userRepository = new UserRepositoryImpl();
+        GameSessionRepository gameSessionRepository = new GameSessionRepositoryImpl();
+        TransactionRepository transactionRepository = new TransactionRepositoryImpl();
+        SupportTicketRepository supportTicketRepository = new SupportTicketRepositoryImpl();
+
+        // Inicializar usuarios de prueba
+        ((UserRepositoryImpl) userRepository).initializeTestUsers();
+
+        // Inicializar servicios
         AuthService authService = new AuthServiceImpl(userRepository);
+        GameService gameService = new GameServiceImpl(gameSessionRepository, transactionRepository, userRepository);
 
         // Cargar el FXML
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
@@ -37,6 +49,21 @@ public class ZtakeApplication extends Application {
         primaryStage.setTitle("Ztake Casino");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        LOGGER.info("Aplicación iniciada correctamente");
+    }
+
+    @Override
+    public void stop() {
+        // Cerrar recursos al finalizar la aplicación
+        try {
+            DatabaseConfig.shutdown();
+            LOGGER.info("Aplicación cerrada correctamente");
+        } catch (Exception e) {
+            LOGGER.severe("Error al cerrar la aplicación: " + e.getMessage());
+        } finally {
+            Platform.exit();
+        }
     }
 
     public static void main(String[] args) {

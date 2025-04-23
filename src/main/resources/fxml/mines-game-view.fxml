@@ -15,9 +15,16 @@
             </padding>
             <children>
                 <!-- Logo -->
-                <ImageView fitWidth="150.0" preserveRatio="true">
-                    <Image url="@../images/ztake-logo.png" />
-                </ImageView>
+                <HBox alignment="CENTER">
+                    <ImageView fitWidth="150.0" preserveRatio="true">
+                        <Image url="@../images/ztake-logo.png" />
+                    </ImageView>
+                    <Label text="Mines" styleClass="section-title" textAlignment="CENTER">
+                        <padding>
+                            <Insets left="20.0" />
+                        </padding>
+                    </Label>
+                </HBox>
 
                 <!-- Info de Saldo -->
                 <HBox alignment="CENTER">
@@ -41,7 +48,11 @@
                     <padding>
                         <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
                     </padding>
-                    <Label text="Minas" styleClass="mines-title" />
+                    <VBox>
+                        <Label text="Minas" styleClass="mines-title" />
+                        <Slider fx:id="minesSlider" min="1" max="10" value="5" showTickLabels="true" showTickMarks="true"
+                                majorTickUnit="1" minorTickCount="0" snapToTicks="true" prefWidth="200.0" />
+                    </VBox>
                     <Region HBox.hgrow="ALWAYS" />
                     <Label fx:id="minesCountLabel" text="5" styleClass="mines-count" />
                 </HBox>
@@ -71,68 +82,11 @@
                 </rowConstraints>
 
                 <!-- Las celdas se agregarán dinámicamente mediante el controlador -->
-                <!-- Ejemplos de celdas: -->
-                <Button styleClass="game-cell" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <graphic>
-                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
-                            <Image url="@../images/gem.png" />
-                        </ImageView>
-                    </graphic>
-                </Button>
-
-                <Button styleClass="game-cell" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                    <graphic>
-                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
-                            <Image url="@../images/gem.png" />
-                        </ImageView>
-                    </graphic>
-                </Button>
-
-                <Button styleClass="game-cell" GridPane.columnIndex="2" GridPane.rowIndex="0">
-                    <graphic>
-                        <Label text="1.14x" styleClass="multiplier-label" />
-                    </graphic>
-                </Button>
-
-                <Button styleClass="game-cell" GridPane.columnIndex="3" GridPane.rowIndex="0">
-                    <graphic>
-                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
-                            <Image url="@../images/gem.png" />
-                        </ImageView>
-                    </graphic>
-                </Button>
-
-                <!-- Segunda fila -->
-                <Button styleClass="game-cell" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <graphic>
-                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
-                            <Image url="@../images/gem.png" />
-                        </ImageView>
-                    </graphic>
-                </Button>
-
-                <Button styleClass="game-cell" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <graphic>
-                        <Label text="1.14x" styleClass="multiplier-label" />
-                    </graphic>
-                </Button>
-
-                <Button styleClass="game-cell" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                    <graphic>
-                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
-                            <Image url="@../images/gem.png" />
-                        </ImageView>
-                    </graphic>
-                </Button>
-
-                <Button styleClass="game-cell" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                    <graphic>
-                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
-                            <Image url="@../images/bomb.png" />
-                        </ImageView>
-                    </graphic>
-                </Button>
             </GridPane>
+
+            <!-- Información del juego -->
+            <Label fx:id="gameInfoLabel" text="Haz clic en una celda para comenzar. Encuentra gemas y evita minas."
+                   textAlignment="CENTER" alignment="CENTER" styleClass="text-label" wrapText="true" />
         </VBox>
     </center>
 
@@ -154,6 +108,21 @@
                 <Region HBox.hgrow="ALWAYS" />
                 <Label fx:id="potentialWinningsLabel" text="7.27" styleClass="winnings-amount" />
             </HBox>
+
+            <!-- Instrucciones del juego -->
+            <TitledPane text="Instrucciones" expanded="false">
+                <VBox spacing="10.0">
+                    <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                    </padding>
+                    <Label wrapText="true" textAlignment="JUSTIFY"
+                           text="En Mines, tu objetivo es encontrar gemas evitando las minas ocultas. Cada tablero tiene un número específico de minas que puedes ajustar con el deslizador." />
+                    <Label wrapText="true" textAlignment="JUSTIFY"
+                           text="Cuantas más gemas descubras, mayor será tu multiplicador. Puedes hacer clic en 'SALIR' en cualquier momento para asegurar tus ganancias actuales." />
+                    <Label wrapText="true" textAlignment="JUSTIFY"
+                           text="Si descubres una mina, perderás tu apuesta inicial. ¡Juega con estrategia!" />
+                </VBox>
+            </TitledPane>
         </VBox>
     </bottom>
 </BorderPane>

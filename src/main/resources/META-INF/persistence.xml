@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="ZtakeCasinoPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Entidades -->
+        <class>com.ztake.casino.model.User</class>
+        <class>com.ztake.casino.model.GameSession</class>
+        <class>com.ztake.casino.model.Transaction</class>
+        <class>com.ztake.casino.model.SupportTicket</class>
+
+        <properties>
+            <!-- Estas propiedades serán sobrescritas por database.properties pero se incluyen como fallback -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:file:./data/ztake_casino;AUTO_SERVER=TRUE"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <!-- Configuración de Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Configuración de la base de datos -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- Eliminamos la referencia directa a HikariCP, lo manejaremos en código -->
+        </properties>
+    </persistence-unit>
+</persistence>

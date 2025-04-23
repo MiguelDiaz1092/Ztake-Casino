@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" styleClass="content-area" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ztake.casino.controller.GamesMenuController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+    </padding>
+
+    <children>
+        <!-- Título de la sección y saldo -->
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <Label text="Juegos Disponibles" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" styleClass="user-info-box" spacing="10.0">
+                <padding>
+                    <Insets top="10.0" right="15.0" bottom="10.0" left="15.0" />
+                </padding>
+                <Label text="Saldo:" styleClass="text-label" />
+                <Label fx:id="balanceLabel" text="0.00" styleClass="balance-label" />
+            </HBox>
+        </HBox>
+
+        <!-- Cuadrícula de juegos -->
+        <GridPane fx:id="gamesGrid" hgap="20.0" vgap="20.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="200.0" prefHeight="250.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="200.0" prefHeight="250.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+
+            <!-- Juego: Mines -->
+            <VBox fx:id="minesCard" styleClass="game-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <ImageView fitWidth="120.0" fitHeight="120.0" preserveRatio="true">
+                        <Image url="@../images/mines-icon.png" />
+                    </ImageView>
+                </VBox>
+                <Label text="Mines" styleClass="game-title" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Encuentra gemas y evita minas" styleClass="text-label" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="¡Disponible!" styleClass="balance-label" alignment="CENTER" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Juego: Slots -->
+            <VBox fx:id="slotsCard" styleClass="game-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <ImageView fitWidth="120.0" fitHeight="120.0" preserveRatio="true">
+                        <Image url="@../images/slots-icon.png" />
+                    </ImageView>
+                </VBox>
+                <Label text="Slots" styleClass="game-title" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Máquinas tragamonedas virtuales" styleClass="text-label" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Próximamente" styleClass="error-label" alignment="CENTER" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Juego: Ruleta -->
+            <VBox fx:id="rouletteCard" styleClass="game-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <ImageView fitWidth="120.0" fitHeight="120.0" preserveRatio="true">
+                        <Image url="@../images/roulette-icon.png" />
+                    </ImageView>
+                </VBox>
+                <Label text="Ruleta" styleClass="game-title" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Ruleta europea virtual" styleClass="text-label" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Próximamente" styleClass="error-label" alignment="CENTER" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Juego: Blackjack -->
+            <VBox fx:id="blackjackCard" styleClass="game-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <ImageView fitWidth="120.0" fitHeight="120.0" preserveRatio="true">
+                        <Image url="@../images/blackjack-icon.png" />
+                    </ImageView>
+                </VBox>
+                <Label text="Blackjack" styleClass="game-title" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Vence al crupier llegando a 21" styleClass="text-label" alignment="CENTER" maxWidth="Infinity" />
+                <Label text="Próximamente" styleClass="error-label" alignment="CENTER" maxWidth="Infinity" />
+            </VBox>
+        </GridPane>
+
+        <!-- Información del casino -->
+        <TitledPane text="Información de los Juegos" expanded="false">
+            <VBox spacing="10.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                </padding>
+
+                <Label wrapText="true" textAlignment="JUSTIFY" text="Ztake Casino te ofrece una variedad de juegos de casino en línea. Todos nuestros juegos cuentan con generadores de números aleatorios certificados para garantizar resultados justos." />
+
+                <Separator />
+
+                <Label text="Mines" styleClass="game-title" />
+                <Label wrapText="true" textAlignment="JUSTIFY" text="En Mines, tu objetivo es encontrar gemas evitando las minas ocultas. Cuantas más gemas descubras, mayor será tu multiplicador. Puedes retirarte en cualquier momento para asegurar tus ganancias, pero si encuentras una mina, perderás tu apuesta." />
+
+                <Label text="Slots (Próximamente)" styleClass="game-title" />
+                <Label wrapText="true" textAlignment="JUSTIFY" text="Nuestras máquinas tragamonedas virtuales ofrecen diferentes temáticas y líneas de pago. Con múltiples combinaciones ganadoras y emocionantes bonos, nuestros slots te brindarán la experiencia de un casino real." />
+
+                <Label text="Ruleta (Próximamente)" styleClass="game-title" />
+                <Label wrapText="true" textAlignment="JUSTIFY" text="La ruleta europea te permite realizar diferentes tipos de apuestas. Apuesta a números específicos, colores, pares o impares y más. Con un RTP del 97.3%, nuestra ruleta ofrece excelentes posibilidades de ganar." />
+
+                <Label text="Blackjack (Próximamente)" styleClass="game-title" />
+                <Label wrapText="true" textAlignment="JUSTIFY" text="El objetivo del Blackjack es obtener una mano cuyo valor se acerque a 21 sin pasarse. Juega contra el crupier y utiliza estrategias para maximizar tus posibilidades de ganar." />
+            </VBox>
+        </TitledPane>
+    </children>
+</VBox>

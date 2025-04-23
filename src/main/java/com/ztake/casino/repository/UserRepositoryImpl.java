@@ -1,55 +1,149 @@
 package com.ztake.casino.repository;
 
+import com.ztake.casino.config.DatabaseConfig;
 import com.ztake.casino.model.User;
-import java.util.*;
-import java.util.stream.Collectors;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Implementación en memoria del repositorio de usuarios.
- * Para un proyecto real, esto se conectaría a una base de datos.
+ * Implementación del repositorio de usuarios utilizando JPA.
  */
 public class UserRepositoryImpl implements UserRepository {
-
-    // Simulación de una base de datos en memoria
-    private final Map<Long, User> users = new HashMap<>();
-    private long nextId = 1;
-
-    public UserRepositoryImpl() {
-        // Inicializar con algunos usuarios de prueba
-        save(new User(null, "admin", "admin@ztake.com", "admin123", 10000.0));
-        save(new User(null, "user", "user@ztake.com", "user123", 1000.0));
-    }
+    private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
 
     @Override
     public Optional<User> findByUsernameOrEmail(String usernameOrEmail) {
-        return users.values().stream()
-                .filter(user -> user.getUsername().equals(usernameOrEmail) ||
-                        user.getEmail().equals(usernameOrEmail))
-                .findFirst();
+        EntityManager em = DatabaseConfig.getEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery(
+                    "SELECT u FROM User u WHERE u.username = :credential OR u.email = :credential",
+                    User.class);
+            query.setParameter("credential", usernameOrEmail);
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al buscar usuario por username o email", e);
+            return Optional.empty();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public User save(User user) {
-        if (user.getId() == null) {
-            // Es un nuevo usuario, asignar ID
-            user.setId(nextId++);
+        EntityManager em = DatabaseConfig.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            if (user.getId() == null) {
+                // Es un nuevo usuario
+                if (user.getRegistrationDate() == null) {
+                    user.setRegistrationDate(LocalDateTime.now());
+                }
+                if (user.getStatus() == null) {
+                    user.setStatus("active");
+                }
+                em.persist(user);
+            } else {
+                // Es un usuario existente
+                user = em.merge(user);
+            }
+
+            em.getTransaction().commit();
+            return user;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            LOGGER.log(Level.SEVERE, "Error al guardar usuario", e);
+            throw new RuntimeException("No se pudo guardar el usuario", e);
+        } finally {
+            em.close();
         }
-        users.put(user.getId(), user);
-        return user;
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(users.values());
+        EntityManager em = DatabaseConfig.getEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al obtener todos los usuarios", e);
+            return List.of();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.ofNullable(users.get(id));
+        EntityManager em = DatabaseConfig.getEntityManager();
+        try {
+            return Optional.ofNullable(em.find(User.class, id));
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al buscar usuario por ID", e);
+            return Optional.empty();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public void deleteById(Long id) {
-        users.remove(id);
+        EntityManager em = DatabaseConfig.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            User user = em.find(User.class, id);
+            if (user != null) {
+                em.remove(user);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            LOGGER.log(Level.SEVERE, "Error al eliminar usuario", e);
+            throw new RuntimeException("No se pudo eliminar el usuario", e);
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Crea usuarios de prueba iniciales si no existen
+     */
+    public void initializeTestUsers() {
+        // Verificar si ya existen usuarios
+        if (!findAll().isEmpty()) {
+            return;
+        }
+
+        LOGGER.info("Creando usuarios de prueba iniciales...");
+
+        // Crear admin
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setEmail("admin@ztake.com");
+        admin.setPassword("admin123"); // En producción, deberíamos hashear la contraseña
+        admin.setBalance(10000.0);
+        save(admin);
+
+        // Crear usuario normal
+        User user = new User();
+        user.setUsername("user");
+        user.setEmail("user@ztake.com");
+        user.setPassword("user123"); // En producción, deberíamos hashear la contraseña
+        user.setBalance(1000.0);
+        save(user);
+
+        LOGGER.info("Usuarios de prueba creados correctamente");
     }
 }
