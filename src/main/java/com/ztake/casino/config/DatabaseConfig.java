@@ -44,8 +44,8 @@ public class DatabaseConfig {
             configOverrides.put("hibernate.format_sql", dbProps.getProperty("hibernate.format_sql"));
             configOverrides.put("hibernate.hbm2ddl.auto", dbProps.getProperty("hibernate.hbm2ddl.auto"));
 
-            // Configuración básica de HikariCP sin usar dataSourceClassName
-            configOverrides.put("hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
+            // Configuración básica de HikariCP con clase de proveedor actualizada
+            configOverrides.put("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
             configOverrides.put("hibernate.hikari.maximumPoolSize", "10");
             configOverrides.put("hibernate.hikari.minimumIdle", "2");
             configOverrides.put("hibernate.hikari.idleTimeout", "30000");

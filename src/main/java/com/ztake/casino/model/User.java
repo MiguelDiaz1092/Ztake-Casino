@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2)")
     private double balance;
 
     @Column(name = "registration_date", nullable = false)

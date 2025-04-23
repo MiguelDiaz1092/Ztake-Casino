@@ -20,10 +20,10 @@ public class GameSession {
     @Column(name = "game_type", nullable = false, length = 50)
     private String gameType;
 
-    @Column(name = "bet_amount", nullable = false, precision = 10, scale = 2)
+    @Column(name = "bet_amount", nullable = false, columnDefinition = "DECIMAL(10,2)")
     private double betAmount;
 
-    @Column(name = "winning_amount", nullable = false, precision = 10, scale = 2)
+    @Column(name = "winning_amount", nullable = false, columnDefinition = "DECIMAL(10,2)")
     private double winningAmount;
 
     @Column(nullable = false, length = 20)

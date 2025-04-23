@@ -1,5 +1,6 @@
 package com.ztake.casino.repository;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.ztake.casino.config.DatabaseConfig;
 import com.ztake.casino.model.User;
 import jakarta.persistence.EntityManager;
@@ -128,19 +129,27 @@ public class UserRepositoryImpl implements UserRepository {
 
         LOGGER.info("Creando usuarios de prueba iniciales...");
 
-        // Crear admin
+        // Crear admin con contraseña hasheada
         User admin = new User();
         admin.setUsername("admin");
         admin.setEmail("admin@ztake.com");
-        admin.setPassword("admin123"); // En producción, deberíamos hashear la contraseña
+
+        // Hash de la contraseña con BCrypt
+        String hashedAdminPassword = BCrypt.withDefaults().hashToString(12, "admin123".toCharArray());
+        admin.setPassword(hashedAdminPassword);
+
         admin.setBalance(10000.0);
         save(admin);
 
-        // Crear usuario normal
+        // Crear usuario normal con contraseña hasheada
         User user = new User();
         user.setUsername("user");
         user.setEmail("user@ztake.com");
-        user.setPassword("user123"); // En producción, deberíamos hashear la contraseña
+
+        // Hash de la contraseña con BCrypt
+        String hashedUserPassword = BCrypt.withDefaults().hashToString(12, "user123".toCharArray());
+        user.setPassword(hashedUserPassword);
+
         user.setBalance(1000.0);
         save(user);
 

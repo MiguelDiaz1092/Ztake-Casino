@@ -4,7 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <!-- Corregido el groupId para que coincida con la estructura de paquetes -->
+    <groupId>com.ztake.casino</groupId>
     <artifactId>ZtakeCasino</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ZtakeCasino</name>
@@ -30,11 +31,11 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- ControlsFX - Añadida para componentes adicionales -->
+        <!-- ControlsFX - Actualizada para JavaFX 17 -->
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>11.2.1</version>
+            <version>11.1.2</version> <!-- Versión compatible con JavaFX 17 -->
         </dependency>
 
         <!-- JSON Library (org.json) -->
@@ -49,6 +50,13 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+        </dependency>
+
+        <!-- MySQL Connector actualizado a la versión correcta -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
         </dependency>
 
         <!-- JPA & Hibernate -->
@@ -70,6 +78,20 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>5.1.0</version>
+        </dependency>
+
+        <!-- SLF4J API para evitar advertencias -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+
+        <!-- SLF4J Simple Implementation -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.9</version>
         </dependency>
 
         <!-- Password Hashing -->
@@ -99,13 +121,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- MySQL Connector/J (usando el artefacto correcto según advertencia) -->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -117,6 +132,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <release>17</release> <!-- Agregado para configurar correctamente Java 17 -->
                 </configuration>
             </plugin>
             <plugin>
@@ -135,6 +151,8 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <!-- Módulos JavaFX requeridos -->
+                            <addModules>javafx.controls,javafx.fxml</addModules>
                         </configuration>
                     </execution>
                 </executions>

@@ -17,7 +17,7 @@ public class Transaction {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2)")
     private double amount;
 
     @Column(name = "transaction_type", nullable = false, length = 20)
