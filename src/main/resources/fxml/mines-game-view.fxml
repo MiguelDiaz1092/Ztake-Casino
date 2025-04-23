@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="800.0" styleClass="game-background" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ztake.casino.controller.MinesGameController">
+    <top>
+        <VBox alignment="CENTER" spacing="15.0">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+            </padding>
+            <children>
+                <!-- Logo -->
+                <ImageView fitWidth="150.0" preserveRatio="true">
+                    <Image url="@../images/ztake-logo.png" />
+                </ImageView>
+
+                <!-- Info de Saldo -->
+                <HBox alignment="CENTER">
+                    <Label text="Saldo" styleClass="balance-title" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="balanceLabel" text="0.00" styleClass="balance-amount" />
+                </HBox>
+
+                <!-- Configuración de Apuesta -->
+                <HBox alignment="CENTER" styleClass="bet-container">
+                    <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                    </padding>
+                    <Label text="Apuesta" styleClass="bet-title" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="betAmountField" text="5.00" alignment="CENTER_RIGHT" styleClass="bet-field" prefWidth="120.0" />
+                </HBox>
+
+                <!-- Información de Minas -->
+                <HBox alignment="CENTER" styleClass="mines-info-container">
+                    <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                    </padding>
+                    <Label text="Minas" styleClass="mines-title" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="minesCountLabel" text="5" styleClass="mines-count" />
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20.0">
+            <padding>
+                <Insets top="10.0" right="20.0" bottom="10.0" left="20.0" />
+            </padding>
+
+            <!-- Tablero de juego 4x4 -->
+            <GridPane fx:id="gameBoard" alignment="CENTER" hgap="10.0" vgap="10.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="100.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="100.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="100.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="100.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+
+                <!-- Las celdas se agregarán dinámicamente mediante el controlador -->
+                <!-- Ejemplos de celdas: -->
+                <Button styleClass="game-cell" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <graphic>
+                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
+                            <Image url="@../images/gem.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button styleClass="game-cell" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <graphic>
+                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
+                            <Image url="@../images/gem.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button styleClass="game-cell" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                    <graphic>
+                        <Label text="1.14x" styleClass="multiplier-label" />
+                    </graphic>
+                </Button>
+
+                <Button styleClass="game-cell" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                    <graphic>
+                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
+                            <Image url="@../images/gem.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <!-- Segunda fila -->
+                <Button styleClass="game-cell" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <graphic>
+                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
+                            <Image url="@../images/gem.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button styleClass="game-cell" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <graphic>
+                        <Label text="1.14x" styleClass="multiplier-label" />
+                    </graphic>
+                </Button>
+
+                <Button styleClass="game-cell" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <graphic>
+                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
+                            <Image url="@../images/gem.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button styleClass="game-cell" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <graphic>
+                        <ImageView fitWidth="60.0" fitHeight="60.0" preserveRatio="true">
+                            <Image url="@../images/bomb.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </GridPane>
+        </VBox>
+    </center>
+
+    <bottom>
+        <VBox alignment="CENTER" spacing="10.0">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="30.0" left="20.0" />
+            </padding>
+
+            <!-- Botón SALIR -->
+            <Button fx:id="cashoutButton" text="SALIR" styleClass="cashout-button" prefWidth="600.0" prefHeight="50.0" onAction="#handleCashoutButtonAction" />
+
+            <!-- Ganancias potenciales -->
+            <HBox alignment="CENTER" styleClass="potential-winnings-container">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                </padding>
+                <Label text="Ganancias potenciales" styleClass="winnings-title" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="potentialWinningsLabel" text="7.27" styleClass="winnings-amount" />
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

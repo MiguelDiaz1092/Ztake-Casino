@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="650.0" prefWidth="400.0" styleClass="background" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ztake.casino.controller.RegisterController">
+    <top>
+        <VBox alignment="CENTER" spacing="10.0">
+            <padding>
+                <Insets top="40.0" bottom="20.0" />
+            </padding>
+            <children>
+                <ImageView fx:id="logoView" fitWidth="200.0" preserveRatio="true">
+                    <Image url="@../images/ztake-logo.png" />
+                </ImageView>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="15.0">
+            <padding>
+                <Insets top="20.0" right="50.0" bottom="50.0" left="50.0" />
+            </padding>
+            <children>
+                <Label text="Crear Cuenta" styleClass="title-label">
+                    <font>
+                        <Font name="System Bold" size="22.0" />
+                    </font>
+                </Label>
+
+                <VBox spacing="5.0">
+                    <!-- Espacio -->
+                </VBox>
+
+                <TextField fx:id="usernameField" promptText="Nombre de usuario" styleClass="input-field" />
+
+                <TextField fx:id="emailField" promptText="Email" styleClass="input-field" />
+
+                <PasswordField fx:id="passwordField" promptText="Contraseña" styleClass="input-field" />
+
+                <PasswordField fx:id="confirmPasswordField" promptText="Confirmar contraseña" styleClass="input-field" />
+
+                <Label fx:id="errorLabel" styleClass="error-label" />
+
+                <VBox spacing="10.0">
+                    <!-- Espacio -->
+                </VBox>
+
+                <Button fx:id="registerButton" text="REGISTRARSE" onAction="#handleRegisterButtonAction" styleClass="login-button" />
+
+                <VBox spacing="20.0">
+                    <!-- Espacio -->
+                </VBox>
+
+                <HBox alignment="CENTER">
+                    <children>
+                        <Label text="¿Ya tienes una cuenta? " styleClass="text-label" />
+                        <Hyperlink fx:id="loginLink" text="Iniciar sesión" onAction="#handleLoginLinkAction" styleClass="link" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

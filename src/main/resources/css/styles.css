@@ -1,20 +1,29 @@
 /* Estilos para la aplicación Ztake Casino */
 
-/* Fondo principal */
+/* Fondo principal y colores base */
 .background {
     -fx-background-color: #20201f;
 }
 
-/* Estilos para las etiquetas de título */
+.game-background {
+    -fx-background-color: #121A24;
+}
+
+/* Estilos para texto */
 .title-label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 22px;
 }
 
-/* Estilos para las etiquetas de texto normales */
 .text-label {
     -fx-text-fill: white;
+}
+
+.section-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
 }
 
 /* Estilos para los campos de texto */
@@ -25,7 +34,7 @@
     -fx-pref-height: 40px;
 }
 
-/* Estilos para los checkbox */
+/* Estilos para checkbox */
 .check-box {
     -fx-text-fill: white;
 }
@@ -39,7 +48,7 @@
     -fx-background-color: white;
 }
 
-/* Estilos para los enlaces */
+/* Estilos para enlaces */
 .link {
     -fx-text-fill: #3498DB;
 }
@@ -48,7 +57,7 @@
     -fx-text-fill: #5DADE2;
 }
 
-/* Estilos para el botón de login */
+/* Estilos para botones */
 .login-button {
     -fx-background-color: #3498DB;
     -fx-text-fill: white;
@@ -61,8 +70,277 @@
     -fx-background-color: #5DADE2;
 }
 
+.action-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-height: 35px;
+    -fx-padding: 5px 15px;
+}
+
+.action-button:hover {
+    -fx-background-color: #5DADE2;
+}
+
 /* Estilos para mensajes de error */
 .error-label {
     -fx-text-fill: #E74C3C;
     -fx-font-size: 12px;
+}
+
+.message-label {
+    -fx-font-size: 12px;
+}
+
+.message-label.success {
+    -fx-text-fill: #2ECC71;
+}
+
+.message-label.error {
+    -fx-text-fill: #E74C3C;
+}
+
+/* Dashboard - Estilos para la barra lateral */
+.sidebar {
+    -fx-background-color: #1A1A1A;
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-color: #333333;
+}
+
+.user-info-box {
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 5px;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #333333;
+}
+
+.nav-button.active {
+    -fx-background-color: #3498DB;
+}
+
+.logout-button {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.logout-button:hover {
+    -fx-background-color: #C0392B;
+}
+
+.balance-label {
+    -fx-text-fill: #2ECC71;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+/* Dashboard - Estilos para tarjetas de juegos */
+.game-card {
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 5px;
+    -fx-padding: 15px;
+    -fx-cursor: hand;
+}
+
+.game-card:hover {
+    -fx-background-color: #333333;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
+
+.game-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 0 0 0;
+}
+
+/* Estilos para el juego Mines */
+.bet-container, .mines-info-container, .potential-winnings-container {
+    -fx-background-color: #1A2533;
+    -fx-background-radius: 5px;
+}
+
+.bet-title, .mines-title, .winnings-title {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.bet-field {
+    -fx-background-color: #121A24;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.mines-count, .balance-amount, .winnings-amount {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.winnings-amount {
+    -fx-text-fill: #2ECC71;
+}
+
+.balance-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
+.game-cell {
+    -fx-background-color: #1A2533;
+    -fx-background-radius: 5px;
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-cursor: hand;
+}
+
+.game-cell:hover {
+    -fx-background-color: #263545;
+}
+
+.multiplier-label {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.cashout-button {
+    -fx-background-color: #2ECC71;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-background-radius: 5px;
+}
+
+.cashout-button:hover {
+    -fx-background-color: #27AE60;
+}
+
+/* Estilos para vistas de perfil y soporte */
+.profile-label, .support-label, .info-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.profile-field, .support-field {
+    -fx-background-color: #2A2A2A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #888888;
+}
+
+.support-text-area {
+    -fx-background-color: #2A2A2A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #888888;
+}
+
+.info-value {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Estilos para estadísticas en la vista de historial */
+.stats-container {
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 5px;
+}
+
+.stat-box {
+    -fx-padding: 10px;
+    -fx-spacing: 5px;
+}
+
+.stat-title {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.stat-value {
+    -fx-text-fill: #2ECC71;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Estilos para TableView */
+.table-view {
+    -fx-background-color: #2A2A2A;
+    -fx-table-cell-border-color: #333333;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1A1A1A;
+}
+
+.table-view .column-header-background .label {
+    -fx-text-fill: white;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+}
+
+.table-row-cell {
+    -fx-background-color: #2A2A2A;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #333333;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #3498DB;
+}
+
+/* Estilos para ComboBox y DatePicker */
+.combo-box, .date-picker {
+    -fx-background-color: #2A2A2A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #888888;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #2A2A2A;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: #2A2A2A;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #2A2A2A;
+}
+
+/* Estilos para TitledPane y Accordion */
+.titled-pane {
+    -fx-text-fill: white;
+}
+
+.titled-pane > .title {
+    -fx-background-color: #2A2A2A;
+    -fx-font-weight: bold;
+}
+
+.titled-pane > .content {
+    -fx-background-color: #333333;
+}
+
+/* Eliminar borde en contenedor de contenido */
+.content-area {
+    -fx-background-color: transparent;
 }

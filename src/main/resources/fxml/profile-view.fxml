@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" styleClass="content-area" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ztake.casino.controller.ProfileController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+    </padding>
+
+    <children>
+        <!-- Título de la sección -->
+        <Label text="Perfil de Usuario" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <!-- Información de perfil -->
+        <GridPane vgap="15.0" hgap="15.0">
+            <columnConstraints>
+                <ColumnConstraints minWidth="100.0" prefWidth="150.0" />
+                <ColumnConstraints minWidth="200.0" prefWidth="300.0" hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <!-- Nombre de usuario -->
+            <Label text="Nombre de usuario:" styleClass="profile-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="usernameField" styleClass="profile-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <!-- Email -->
+            <Label text="Email:" styleClass="profile-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="emailField" styleClass="profile-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <!-- Contraseña actual -->
+            <Label text="Contraseña actual:" styleClass="profile-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <PasswordField fx:id="currentPasswordField" styleClass="profile-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <!-- Nueva contraseña -->
+            <Label text="Nueva contraseña:" styleClass="profile-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <PasswordField fx:id="newPasswordField" styleClass="profile-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <!-- Confirmar nueva contraseña -->
+            <Label text="Confirmar contraseña:" styleClass="profile-label" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <PasswordField fx:id="confirmPasswordField" styleClass="profile-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        </GridPane>
+
+        <!-- Mensaje de error/éxito -->
+        <Label fx:id="messageLabel" styleClass="message-label" />
+
+        <!-- Botones de acción -->
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <Button fx:id="saveButton" text="Guardar Cambios" styleClass="action-button" onAction="#handleSaveButtonAction" />
+        </HBox>
+
+        <!-- Sección de información de cuenta -->
+        <TitledPane text="Información de Cuenta" expanded="false">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                </padding>
+
+                <GridPane vgap="10.0" hgap="15.0">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
+                        <ColumnConstraints minWidth="200.0" prefWidth="300.0" hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <Label text="Fecha de registro:" styleClass="info-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="registrationDateLabel" text="01/01/2023" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label text="Saldo actual:" styleClass="info-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="currentBalanceLabel" text="1000.00" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label text="Total apostado:" styleClass="info-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="totalBetLabel" text="500.00" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                    <Label text="Total ganado:" styleClass="info-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="totalWonLabel" text="750.00" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                </GridPane>
+            </VBox>
+        </TitledPane>
+    </children>
+</VBox>

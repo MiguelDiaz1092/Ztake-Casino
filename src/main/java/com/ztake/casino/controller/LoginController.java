@@ -4,9 +4,14 @@ import com.ztake.casino.model.User;
 import com.ztake.casino.service.AuthService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -78,11 +83,48 @@ public class LoginController {
         if (userOptional.isPresent()) {
             // Autenticación exitosa
             errorLabel.setVisible(false);
-            showSuccessAlert(owner, "Bienvenido a Ztake Casino, " + userOptional.get().getUsername() + "!");
 
-            // Aquí deberías abrir la ventana principal del casino
-            // Por ahora, simplemente lo registramos
-            System.out.println("Autenticación exitosa para: " + userOptional.get().getUsername());
+            // Obtener el usuario autenticado
+            User authenticatedUser = userOptional.get();
+
+            // Mostrar mensaje de bienvenida
+            showSuccessAlert(owner, "Bienvenido a Ztake Casino, " + authenticatedUser.getUsername() + "!");
+
+            // Registrar en consola
+            System.out.println("Autenticación exitosa para: " + authenticatedUser.getUsername());
+
+            // IMPORTANTE: Navegar a la vista principal del dashboard
+            try {
+                // Cargar la vista principal
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-view.fxml"));
+                Parent mainView = loader.load();
+
+                // Obtener el controlador y pasarle el usuario autenticado
+                MainController mainController = loader.getController();
+                mainController.setCurrentUser(authenticatedUser);
+
+                // Crear una nueva escena
+                Scene scene = new Scene(mainView, 1000, 700);
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
+                // Obtener el stage actual y cambiar la escena
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("Ztake Casino - Dashboard");
+                stage.centerOnScreen(); // Centrar la ventana
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Error al cargar la vista principal: " + e.getMessage());
+
+                // Mostrar mensaje de error
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error de navegación");
+                alert.setContentText("No se pudo cargar la vista principal: " + e.getMessage());
+                alert.showAndWait();
+            }
+
         } else {
             // Autenticación fallida
             errorLabel.setText("Usuario o contraseña incorrectos");
@@ -128,17 +170,36 @@ public class LoginController {
 
     /**
      * Maneja el evento de clic en el enlace de registro.
+     * Carga la vista de registro y la muestra.
      */
     @FXML
     public void handleRegisterAction(ActionEvent event) {
-        Window owner = registerLink.getScene().getWindow();
+        try {
+            // Cargar la vista de registro
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/register-view.fxml"));
+            Parent registerRoot = loader.load();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Registro");
-        alert.setHeaderText(null);
-        alert.setContentText("La funcionalidad de registro aún no está implementada.");
-        alert.initOwner(owner);
-        alert.showAndWait();
+            // Obtener el controlador y pasarle el servicio
+            RegisterController registerController = loader.getController();
+            registerController.setAuthService(authService);
+
+            // Crear y configurar la escena
+            Scene scene = new Scene(registerRoot, 400, 650);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
+            // Obtener el stage actual y cambiar la escena
+            Stage stage = (Stage) registerLink.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No se pudo cargar la vista de registro: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**

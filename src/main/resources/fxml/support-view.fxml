@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" styleClass="content-area" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ztake.casino.controller.SupportController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+    </padding>
+
+    <children>
+        <!-- Título de la sección -->
+        <Label text="Soporte" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <!-- Formulario de contacto -->
+        <TitledPane text="Contactar a Soporte" expanded="true">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                </padding>
+
+                <GridPane vgap="15.0" hgap="15.0">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints minWidth="200.0" prefWidth="400.0" hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <!-- Asunto -->
+                    <Label text="Asunto:" styleClass="support-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="subjectField" promptText="Ej: Problema con mi cuenta" styleClass="support-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <!-- Categoría -->
+                    <Label text="Categoría:" styleClass="support-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="categoryComboBox" promptText="Selecciona una categoría" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="Infinity" />
+
+                    <!-- Mensaje -->
+                    <Label text="Mensaje:" styleClass="support-label" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                    <TextArea fx:id="messageArea" promptText="Describe tu problema o consulta en detalle..." styleClass="support-text-area" GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="150.0" wrapText="true" />
+                </GridPane>
+
+                <!-- Mensaje de error/éxito -->
+                <Label fx:id="formMessageLabel" styleClass="message-label" />
+
+                <!-- Botón de envío -->
+                <HBox alignment="CENTER_RIGHT">
+                    <Button fx:id="sendButton" text="Enviar Consulta" styleClass="action-button" onAction="#handleSendButtonAction" />
+                </HBox>
+            </VBox>
+        </TitledPane>
+
+        <!-- FAQ (Preguntas Frecuentes) -->
+        <TitledPane text="Preguntas Frecuentes" expanded="false">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                </padding>
+
+                <Accordion fx:id="faqAccordion">
+                    <panes>
+                        <TitledPane text="¿Cómo funciona el juego Mines?">
+                            <VBox>
+                                <Label wrapText="true" text="Mines es un juego donde debes encontrar gemas ocultas en un tablero, evitando las minas. Cuantas más gemas descubras, mayor será tu multiplicador. Puedes salir en cualquier momento para asegurar tus ganancias, pero si encuentras una mina, perderás tu apuesta." />
+                            </VBox>
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo deposito dinero?">
+                            <VBox>
+                                <Label wrapText="true" text="Esta función no está disponible en la versión de demostración. En un casino real, podrías usar varios métodos de pago como tarjetas, transferencias o monederos electrónicos." />
+                            </VBox>
+                        </TitledPane>
+
+                        <TitledPane text="¿He olvidado mi contraseña, qué hago?">
+                            <VBox>
+                                <Label wrapText="true" text="Puedes usar la opción 'Olvidé mi contraseña' en la pantalla de inicio de sesión para recibir un correo con instrucciones para restablecerla." />
+                            </VBox>
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo funciona el sistema de multiplicadores?">
+                            <VBox>
+                                <Label wrapText="true" text="El multiplicador aumenta con cada casilla segura que descubres. Cuantas más minas hayas seleccionado al inicio del juego, mayores serán los multiplicadores potenciales, pero también será más difícil ganar." />
+                            </VBox>
+                        </TitledPane>
+                    </panes>
+                </Accordion>
+            </VBox>
+        </TitledPane>
+    </children>
+</VBox>
