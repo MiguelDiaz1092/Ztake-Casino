@@ -5,11 +5,15 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Font?> <!-- Font import might not be strictly necessary depending on CSS usage -->
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="background" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ztake.casino.controller.MainController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="background"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ztake.casino.controller.MainController">
 
-    <!-- Barra lateral de navegación -->
+    <!-- ====================================================== -->
+    <!-- Left Sidebar (Navigation and User Info)                -->
+    <!-- ====================================================== -->
     <left>
         <VBox prefWidth="200.0" styleClass="sidebar" spacing="10.0">
             <padding>
@@ -17,95 +21,141 @@
             </padding>
             <children>
                 <!-- Logo -->
-                <VBox alignment="CENTER" spacing="10.0">
+                <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="NEVER"> <!-- Added VBox.vgrow -->
                     <ImageView fitWidth="150.0" preserveRatio="true">
-                        <Image url="@../images/ztake-logo.png" />
+                        <image> <!-- Corrected tag: lowercase <image> -->
+                            <Image url="@../images/ztake-logo.png" backgroundLoading="true"/> <!-- Added backgroundLoading -->
+                        </image>
                     </ImageView>
                 </VBox>
 
-                <!-- Información de usuario -->
-                <VBox styleClass="user-info-box" spacing="5.0">
+                <!-- User Information Box -->
+                <VBox styleClass="user-info-box" spacing="8.0" VBox.vgrow="NEVER"> <!-- Adjusted spacing, Added VBox.vgrow -->
                     <padding>
                         <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
                     </padding>
                     <Label text="Bienvenido," styleClass="text-label" />
-                    <Label fx:id="usernameLabel" text="Usuario" styleClass="title-label" />
+                    <Label fx:id="usernameLabel" text="Usuario" styleClass="title-label" wrapText="true"/> <!-- Added wrapText -->
                     <Separator />
                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                         <Label text="Saldo:" styleClass="text-label" />
-                        <Label fx:id="balanceLabel" text="1000.00" styleClass="balance-label" />
+                        <Label fx:id="balanceLabel" text="0.00" styleClass="balance-label" /> <!-- Default to 0.00 -->
                     </HBox>
-                    <!-- Reloj en tiempo real -->
+
+                    <!-- Deposit Button (Added Here) -->
+                    <Button fx:id="depositButton"
+                            text="Recargar"
+                            styleClass="action-button"
+                            onAction="#handleDepositButtonAction"
+                            maxWidth="Infinity"/>  <!-- Comment removed from previous line -->
+                    <!-- End of Added Button -->
+
                     <Separator />
-                    <Label fx:id="clockLabel" text="00/00/0000 00:00:00" styleClass="text-label" />
+                    <Label fx:id="clockLabel" text="--/--/---- --:--:--" styleClass="text-label" /> <!-- Default clock text -->
                 </VBox>
 
-                <!-- Separador -->
-                <Separator />
+                <!-- Separator -->
+                <Separator VBox.vgrow="NEVER"/> <!-- Added VBox.vgrow -->
 
-                <!-- Opciones de navegación -->
+                <!-- Navigation Buttons -->
                 <Button fx:id="homeButton" text="Inicio" styleClass="nav-button" maxWidth="Infinity" onAction="#handleHomeButtonAction" />
                 <Button fx:id="gamesButton" text="Juegos" styleClass="nav-button" maxWidth="Infinity" onAction="#handleGamesButtonAction" />
                 <Button fx:id="historyButton" text="Historial" styleClass="nav-button" maxWidth="Infinity" onAction="#handleHistoryButtonAction" />
                 <Button fx:id="profileButton" text="Perfil" styleClass="nav-button" maxWidth="Infinity" onAction="#handleProfileButtonAction" />
                 <Button fx:id="supportButton" text="Soporte" styleClass="nav-button" maxWidth="Infinity" onAction="#handleSupportButtonAction" />
 
+                <!-- Spacer to push logout button down -->
                 <Region VBox.vgrow="ALWAYS" />
 
-                <!-- Botón de cerrar sesión en la parte inferior -->
+                <!-- Logout Button -->
                 <Button fx:id="logoutButton" text="Cerrar Sesión" styleClass="logout-button" maxWidth="Infinity" onAction="#handleLogoutButtonAction" />
             </children>
         </VBox>
     </left>
 
-    <!-- Contenido principal que cambia según la sección -->
+    <!-- ====================================================== -->
+    <!-- Center Content Area                                    -->
+    <!-- ====================================================== -->
     <center>
         <StackPane fx:id="contentArea">
             <padding>
                 <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
             </padding>
 
-            <!-- Vista de inicio predeterminada -->
-            <VBox fx:id="homeView" spacing="20.0">
+            <!-- Default Home View (Can be replaced by other views) -->
+            <VBox fx:id="homeView" spacing="20.0" alignment="TOP_CENTER"> <!-- Added alignment -->
+                <padding>
+                    <Insets top="10.0" /> <!-- Added top padding for home view -->
+                </padding>
                 <Label text="Juegos Destacados" styleClass="section-title" />
 
-                <!-- Cuadrícula de juegos -->
-                <GridPane hgap="20.0" vgap="20.0">
+                <!-- Featured Games Grid -->
+                <GridPane hgap="20.0" vgap="20.0" alignment="CENTER"> <!-- Added alignment -->
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" halignment="CENTER"/> <!-- Added halignment -->
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" halignment="CENTER"/> <!-- Added halignment -->
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="200.0" halignment="CENTER"/> <!-- Added halignment -->
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="150.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                        <!-- Add more RowConstraints if needed -->
                     </rowConstraints>
 
-                    <!-- Tarjeta del juego Mines -->
-                    <VBox styleClass="game-card" GridPane.columnIndex="0" GridPane.rowIndex="0" onMouseClicked="#handleMinesGameAction">
-                        <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <!-- Game Card: Mines -->
+                    <VBox styleClass="game-card" GridPane.columnIndex="0" GridPane.rowIndex="0" onMouseClicked="#handleMinesGameAction" alignment="CENTER"> <!-- Added alignment -->
+                        <VBox alignment="CENTER" VBox.vgrow="ALWAYS"> <!-- Added VBox.vgrow -->
                             <ImageView fitWidth="100.0" fitHeight="100.0" preserveRatio="true">
-                                <Image url="@../images/mines-icon.png" />
+                                <image>
+                                    <Image url="@../images/mines-icon.png" backgroundLoading="true"/> <!-- Added backgroundLoading -->
+                                </image>
                             </ImageView>
                         </VBox>
                         <Label text="Mines" styleClass="game-title" alignment="CENTER" maxWidth="Infinity" />
                     </VBox>
 
-                    <!-- Más juegos se añadirán aquí -->
+                    <!-- Placeholder for more games -->
+                    <!--
+                    <VBox styleClass="game-card" GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
+
+                    </VBox>
+                    <VBox styleClass="game-card" GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER">
+
+                    </VBox>
+                     -->
+
                 </GridPane>
 
-                <!-- Sección de actividad reciente -->
+                <!-- Recent Activity Section -->
                 <VBox spacing="10.0">
-                    <Label text="Actividad Reciente" styleClass="section-title" />
+                    <Label text="Actividad Reciente" styleClass="section-title" alignment="CENTER_LEFT"/> <!-- Added alignment -->
                     <TableView fx:id="recentActivityTable" prefHeight="200.0">
                         <columns>
-                            <TableColumn fx:id="gameColumn" text="Juego" prefWidth="150.0" />
-                            <TableColumn fx:id="betColumn" text="Apuesta" prefWidth="100.0" />
-                            <TableColumn fx:id="resultColumn" text="Resultado" prefWidth="100.0" />
-                            <TableColumn fx:id="dateColumn" text="Fecha" prefWidth="150.0" />
+                            <!-- Define TableColumn fx:id corresponding to your RecentActivity model -->
+                            <TableColumn fx:id="gameColumn" text="Juego" prefWidth="150.0" styleClass="table-column"/>
+                            <TableColumn fx:id="betColumn" text="Apuesta" prefWidth="100.0" styleClass="table-column-amount"/>
+                            <TableColumn fx:id="resultColumn" text="Resultado" prefWidth="100.0" styleClass="table-column"/>
+                            <TableColumn fx:id="dateColumn" text="Fecha" prefWidth="150.0" styleClass="table-column-date"/>
                         </columns>
+                        <!-- Makes columns try to fill the width -->
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+                        <!-- Placeholder for when the table is empty -->
+                        <placeholder>
+                            <Label text="No hay actividad reciente."/>
+                        </placeholder>
                     </TableView>
                 </VBox>
+
+                <!-- Spacer at the bottom if needed -->
+                <Region VBox.vgrow="ALWAYS" />
+
             </VBox>
+
+            <!-- Other views (like games-view.fxml, history-view.fxml) would be included here
+                 and managed by the controller to be visible/invisible as needed.
+                 Example:
+                 <fx:include fx:id="gamesView" source="games-view.fxml" visible="false"/>
+            -->
+
         </StackPane>
     </center>
 </BorderPane>

@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -60,6 +61,9 @@ public class MainController {
 
     @FXML
     private Button logoutButton;
+    
+    @FXML
+    private Button depositButton;
 
     @FXML
     private StackPane contentArea;
@@ -312,10 +316,14 @@ public class MainController {
         }
 
         switch (dbResult) {
-            case "won": return "Ganado";
-            case "lost": return "Perdido";
-            case "in_progress": return "En progreso";
-            default: return dbResult;
+            case "won":
+                return "Ganado";
+            case "lost":
+                return "Perdido";
+            case "in_progress":
+                return "En progreso";
+            default:
+                return dbResult;
         }
     }
 
@@ -464,4 +472,282 @@ public class MainController {
             return date;
         }
     }
+
+    // Agrega estos métodos a tu clase MainController.java
+
+    /**
+     * Maneja el evento de clic en el botón de inicio.
+     */
+    @FXML
+    public void handleHomeButtonAction(ActionEvent event) {
+        if (contentArea != null && homeView != null) {
+            // Limpiar el área de contenido y mostrar la vista de inicio
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(homeView);
+
+            // Actualizar datos de usuario y actividad reciente
+            if (currentUser != null) {
+                updateBalanceLabel();
+                loadRecentActivity();
+            }
+        }
+
+        LOGGER.info("Usuario navegó a la vista Home");
+    }
+
+    /**
+     * Maneja el evento de clic en el botón de juegos.
+     */
+    @FXML
+    public void handleGamesButtonAction(ActionEvent event) {
+        try {
+            // Cargar la vista de menú de juegos
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/games-menu-view.fxml"));
+            Parent gamesView = loader.load();
+
+            // Obtener el controlador
+            GamesMenuController gamesController = loader.getController();
+
+            // Configurar el controlador con los datos necesarios
+            if (currentUser != null) {
+                gamesController.setCurrentUser(currentUser);
+            }
+            if (gameService != null) {
+                gamesController.setGameService(gameService);
+            }
+
+            // Mostrar la vista de juegos
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(gamesView);
+            }
+
+            LOGGER.info("Usuario navegó a la vista de Juegos");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de juegos: " + e.getMessage(), e);
+            showAlert("Error", "Error de navegación", "No se pudo cargar la vista de juegos: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Maneja el evento de clic en el botón de historial.
+     */
+    @FXML
+    public void handleHistoryButtonAction(ActionEvent event) {
+        try {
+            // Cargar la vista de historial
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/history-view.fxml"));
+            Parent historyView = loader.load();
+
+            // Obtener el controlador
+            HistoryController historyController = loader.getController();
+
+            // Configurar el controlador con los datos necesarios
+            if (currentUser != null) {
+                historyController.setCurrentUser(currentUser);
+            }
+            if (gameService != null) {
+                historyController.setGameService(gameService);
+            }
+
+            // Mostrar la vista de historial
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(historyView);
+            }
+
+            LOGGER.info("Usuario navegó a la vista de Historial");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de historial: " + e.getMessage(), e);
+            showAlert("Error", "Error de navegación", "No se pudo cargar la vista de historial: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Maneja el evento de clic en el botón de perfil.
+     */
+    @FXML
+    public void handleProfileButtonAction(ActionEvent event) {
+        try {
+            // Cargar la vista de perfil
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/profile-view.fxml"));
+            Parent profileView = loader.load();
+
+            // Obtener el controlador
+            ProfileController profileController = loader.getController();
+
+            // Configurar el controlador con los datos necesarios
+            if (currentUser != null) {
+                profileController.setUserData(currentUser);
+            }
+
+            // Mostrar la vista de perfil
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(profileView);
+            }
+
+            LOGGER.info("Usuario navegó a la vista de Perfil");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de perfil: " + e.getMessage(), e);
+            showAlert("Error", "Error de navegación", "No se pudo cargar la vista de perfil: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Maneja el evento de clic en el botón de soporte.
+     */
+    @FXML
+    public void handleSupportButtonAction(ActionEvent event) {
+        try {
+            // Cargar la vista de soporte
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/support-view.fxml"));
+            Parent supportView = loader.load();
+
+            // Obtener el controlador
+            SupportController supportController = loader.getController();
+
+            // Configurar el controlador con los datos necesarios
+            if (currentUser != null) {
+                supportController.setCurrentUser(currentUser);
+            }
+
+            // Mostrar la vista de soporte
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(supportView);
+            }
+
+            LOGGER.info("Usuario navegó a la vista de Soporte");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de soporte: " + e.getMessage(), e);
+            showAlert("Error", "Error de navegación", "No se pudo cargar la vista de soporte: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Maneja el evento de clic en el botón de cerrar sesión.
+     */
+    @FXML
+    public void handleLogoutButtonAction(ActionEvent event) {
+        // Mostrar confirmación antes de cerrar sesión
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Cerrar sesión");
+        alert.setHeaderText("¿Estás seguro de que deseas cerrar sesión?");
+        alert.setContentText("Se perderá la sesión actual.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // Limpiar datos de sesión
+                currentUser = null;
+
+                // Detener el reloj si está activo
+                dispose();
+
+                // Cargar la vista de login
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
+                Parent loginView = loader.load();
+
+                // Obtener el controlador
+                LoginController loginController = loader.getController();
+
+                // Configurar el controlador con el servicio de autenticación
+                loginController.setAuthService(ZtakeApplication.getAuthService());
+
+                // Obtener la ventana actual
+                Stage stage = (Stage) logoutButton.getScene().getWindow();
+
+                // Crear una nueva escena con la vista de login
+                Scene scene = new Scene(loginView, 400, 600);
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
+                // Establecer la nueva escena
+                stage.setScene(scene);
+                stage.setTitle("Ztake Casino - Login");
+                stage.centerOnScreen();
+
+                LOGGER.info("Usuario cerró sesión correctamente");
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Error al cargar la vista de login: " + e.getMessage(), e);
+                showAlert("Error", "Error de navegación", "No se pudo cargar la vista de login: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Maneja el evento de clic en el botón de recarga de saldo.
+     */
+    @FXML
+    public void handleDepositButtonAction(ActionEvent event) {
+        if (currentUser == null || gameService == null) {
+            showAlert("Error", "Error de configuración", "No se pudo iniciar la recarga debido a un problema de configuración.");
+            return;
+        }
+
+        // Crear un diálogo para ingresar la cantidad
+        TextInputDialog dialog = new TextInputDialog("100.00");
+        dialog.setTitle("Recargar Saldo");
+        dialog.setHeaderText("Ingresa la cantidad que deseas recargar");
+        dialog.setContentText("Cantidad (€):");
+
+        // Aplicar validación al input
+        dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                dialog.getEditor().setText(oldValue);
+            }
+        });
+
+        // Mostrar diálogo y procesar resultado
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(amountStr -> {
+            try {
+                double amount = Double.parseDouble(amountStr);
+
+                // Validar monto
+                if (amount <= 0) {
+                    showAlert("Error", "Monto inválido", "El monto debe ser mayor que cero.");
+                    return;
+                }
+
+                if (amount > 10000) {
+                    showAlert("Error", "Monto excedido", "El monto máximo por recarga es de 10,000.");
+                    return;
+                }
+
+                // Confirmar la transacción
+                Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmDialog.setTitle("Confirmar Recarga");
+                confirmDialog.setHeaderText("¿Estás seguro de realizar esta recarga?");
+                confirmDialog.setContentText("Se añadirán " + String.format("%.2f", amount) + " a tu saldo actual.");
+
+                Optional<ButtonType> confirmResult = confirmDialog.showAndWait();
+                if (confirmResult.isPresent() && confirmResult.get() == ButtonType.OK) {
+                    // Procesar la recarga
+                    try {
+                        User updatedUser = gameService.depositFunds(currentUser, amount);
+                        currentUser = updatedUser; // Actualizar referencia al usuario
+
+                        // Actualizar UI
+                        updateBalanceLabel();
+
+                        // Mostrar mensaje de éxito
+                        showAlert("Éxito", "Recarga completada",
+                                "Se han añadido " + String.format("%.2f", amount) +
+                                        " a tu saldo. Nuevo saldo: " + String.format("%.2f", currentUser.getBalance()));
+
+                        // Refrescar actividad reciente
+                        loadRecentActivity();
+
+                    } catch (Exception e) {
+                        LOGGER.log(Level.SEVERE, "Error al procesar recarga: " + e.getMessage(), e);
+                        showAlert("Error", "Error de procesamiento", "No se pudo completar la recarga: " + e.getMessage());
+                    }
+                }
+            } catch (NumberFormatException e) {
+                showAlert("Error", "Formato inválido", "Por favor, ingresa un número válido.");
+            }
+        });
+    }
+
 }
