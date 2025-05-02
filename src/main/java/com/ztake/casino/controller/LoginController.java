@@ -1,5 +1,6 @@
 package com.ztake.casino.controller;
 
+import com.ztake.casino.ZtakeApplication;
 import com.ztake.casino.model.User;
 import com.ztake.casino.service.AuthService;
 import javafx.event.ActionEvent;
@@ -13,11 +14,14 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controlador para la vista de login.
  */
 public class LoginController {
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
     @FXML
     private TextField usernameField;
@@ -99,9 +103,12 @@ public class LoginController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-view.fxml"));
                 Parent mainView = loader.load();
 
-                // Obtener el controlador y pasarle el usuario autenticado
+                // Obtener el controlador y pasarle el usuario autenticado y los servicios
                 MainController mainController = loader.getController();
                 mainController.setCurrentUser(authenticatedUser);
+
+                // Usar los servicios globales de la aplicación
+                mainController.setGameService(ZtakeApplication.getGameService());
 
                 // Crear una nueva escena
                 Scene scene = new Scene(mainView, 1000, 700);
@@ -114,8 +121,7 @@ public class LoginController {
                 stage.centerOnScreen(); // Centrar la ventana
 
             } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Error al cargar la vista principal: " + e.getMessage());
+                LOGGER.log(Level.SEVERE, "Error al cargar la vista principal: " + e.getMessage(), e);
 
                 // Mostrar mensaje de error
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -193,7 +199,7 @@ public class LoginController {
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al cargar la vista de registro: " + e.getMessage(), e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -212,9 +218,5 @@ public class LoginController {
         alert.setContentText(message);
         alert.initOwner(owner);
         alert.showAndWait();
-
-
-
-
     }
 }

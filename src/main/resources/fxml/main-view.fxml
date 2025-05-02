@@ -35,6 +35,9 @@
                         <Label text="Saldo:" styleClass="text-label" />
                         <Label fx:id="balanceLabel" text="1000.00" styleClass="balance-label" />
                     </HBox>
+                    <!-- Reloj en tiempo real -->
+                    <Separator />
+                    <Label fx:id="clockLabel" text="00/00/0000 00:00:00" styleClass="text-label" />
                 </VBox>
 
                 <!-- Separador -->

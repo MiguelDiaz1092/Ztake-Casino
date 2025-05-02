@@ -8,22 +8,34 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Configuración simplificada de la base de datos y gestión de la conexión
+ * Configuración mejorada de la base de datos y gestión de la conexión
  */
 public class DatabaseConfig {
     private static final Logger LOGGER = Logger.getLogger(DatabaseConfig.class.getName());
     private static final String PERSISTENCE_UNIT_NAME = "ZtakeCasinoPU";
     private static EntityManagerFactory emf;
+    private static boolean initialized = false;
 
-    static {
+    /**
+     * Inicializa la conexión a la base de datos de manera segura.
+     * Se llama automáticamente cuando se necesita un EntityManager.
+     */
+    public static synchronized void initialize() {
+        if (initialized) {
+            return;
+        }
+
         try {
             Properties dbProps = loadProperties();
             initEntityManagerFactory(dbProps);
+            initialized = true;
+            LOGGER.info("Base de datos inicializada correctamente");
         } catch (Exception e) {
-            LOGGER.severe("Error inicializando la base de datos: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error inicializando la base de datos: " + e.getMessage(), e);
             throw new RuntimeException("No se pudo inicializar la base de datos", e);
         }
     }
@@ -44,14 +56,22 @@ public class DatabaseConfig {
             configOverrides.put("hibernate.format_sql", dbProps.getProperty("hibernate.format_sql"));
             configOverrides.put("hibernate.hbm2ddl.auto", dbProps.getProperty("hibernate.hbm2ddl.auto"));
 
-            // Configuración básica de HikariCP con clase de proveedor actualizada
-            configOverrides.put("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
-            configOverrides.put("hibernate.hikari.maximumPoolSize", "10");
-            configOverrides.put("hibernate.hikari.minimumIdle", "2");
-            configOverrides.put("hibernate.hikari.idleTimeout", "30000");
+            // Verificar si HikariCP está disponible
+            try {
+                Class.forName("com.zaxxer.hikari.hibernate.HikariConnectionProvider");
+
+                // Configuración básica de HikariCP
+                configOverrides.put("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
+                configOverrides.put("hibernate.hikari.maximumPoolSize", "10");
+                configOverrides.put("hibernate.hikari.minimumIdle", "2");
+                configOverrides.put("hibernate.hikari.idleTimeout", "30000");
+
+                LOGGER.info("HikariCP disponible y configurado");
+            } catch (ClassNotFoundException e) {
+                LOGGER.warning("HikariCP no está disponible en el classpath. Usando el pool de conexiones predeterminado.");
+            }
 
             emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, configOverrides);
-
             LOGGER.info("EntityManagerFactory inicializada correctamente");
         } catch (Exception e) {
             LOGGER.severe("Error inicializando EntityManagerFactory: " + e.getMessage());
@@ -71,10 +91,20 @@ public class DatabaseConfig {
     }
 
     /**
-     * Obtiene un EntityManager para operaciones de base de datos
+     * Obtiene un EntityManager para operaciones de base de datos.
+     * Inicializa la conexión si es necesario.
+     *
      * @return EntityManager conectado a la base de datos
      */
     public static EntityManager getEntityManager() {
+        if (!initialized) {
+            initialize();
+        }
+
+        if (emf == null || !emf.isOpen()) {
+            throw new IllegalStateException("EntityManagerFactory no está inicializada o está cerrada");
+        }
+
         return emf.createEntityManager();
     }
 
@@ -83,8 +113,13 @@ public class DatabaseConfig {
      */
     public static void shutdown() {
         if (emf != null && emf.isOpen()) {
-            emf.close();
-            LOGGER.info("Recursos de base de datos cerrados correctamente");
+            try {
+                emf.close();
+                initialized = false;
+                LOGGER.info("Recursos de base de datos cerrados correctamente");
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error al cerrar los recursos de base de datos", e);
+            }
         }
     }
 }

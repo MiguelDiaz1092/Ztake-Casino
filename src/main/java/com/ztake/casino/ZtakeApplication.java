@@ -18,8 +18,15 @@ import java.util.logging.Logger;
 public class ZtakeApplication extends Application {
     private static final Logger LOGGER = Logger.getLogger(ZtakeApplication.class.getName());
 
+    // Mantener referencias globales a los servicios
+    private static AuthService authService;
+    private static GameService gameService;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Inicializar la base de datos
+        DatabaseConfig.initialize();
+
         // Inicializar el repositorio y servicios
         UserRepository userRepository = new UserRepositoryImpl();
         GameSessionRepository gameSessionRepository = new GameSessionRepositoryImpl();
@@ -30,8 +37,8 @@ public class ZtakeApplication extends Application {
         ((UserRepositoryImpl) userRepository).initializeTestUsers();
 
         // Inicializar servicios
-        AuthService authService = new AuthServiceImpl(userRepository);
-        GameService gameService = new GameServiceImpl(gameSessionRepository, transactionRepository, userRepository);
+        authService = new AuthServiceImpl(userRepository);
+        gameService = new GameServiceImpl(gameSessionRepository, transactionRepository, userRepository);
 
         // Cargar el FXML
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
@@ -64,6 +71,22 @@ public class ZtakeApplication extends Application {
         } finally {
             Platform.exit();
         }
+    }
+
+    /**
+     * Obtiene el servicio de autenticación.
+     * @return el servicio de autenticación
+     */
+    public static AuthService getAuthService() {
+        return authService;
+    }
+
+    /**
+     * Obtiene el servicio de juego.
+     * @return el servicio de juego
+     */
+    public static GameService getGameService() {
+        return gameService;
     }
 
     public static void main(String[] args) {
