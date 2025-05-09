@@ -85,6 +85,11 @@ public class SupportTicketRepositoryImpl implements SupportTicketRepository {
         }
     }
 
+
+
+
+
+
     @Override
     public List<SupportTicket> findByStatus(String status) {
         EntityManager em = DatabaseConfig.getEntityManager();
