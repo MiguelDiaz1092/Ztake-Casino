@@ -128,6 +128,17 @@ public class MinesGameController {
 
         // Inicializar el tablero
         initializeGameBoard();
+
+        // Asegurarse de que el botón cashout esté visible
+        if (cashoutButton != null) {
+            cashoutButton.setVisible(true);
+            // En el inicio, el cashout lleva al dashboard
+            if (gameInfoLabel != null) {
+                gameInfoLabel.setText("¡Bienvenido a Mines! Selecciona una cantidad para apostar y comienza a jugar.");
+            }
+        } else {
+            LOGGER.severe("Error: cashoutButton es null en initialize()");
+        }
     }
 
     /**
@@ -246,12 +257,18 @@ public class MinesGameController {
             return;
         }
 
-        if (!gameStarted) {
-            // Iniciar un juego nuevo
-            startNewGame(button, row, col);
-        } else {
-            // Continuar un juego en progreso
-            continueGame(button, row, col);
+        updateInProgress = true;
+
+        try {
+            if (!gameStarted) {
+                // Iniciar un juego nuevo
+                startNewGame(button, row, col);
+            } else {
+                // Continuar un juego en progreso
+                continueGame(button, row, col);
+            }
+        } finally {
+            updateInProgress = false;
         }
     }
 
@@ -300,8 +317,18 @@ public class MinesGameController {
                         gameInfoLabel.setText("¡Juego en curso! Encuentra las gemas y evita las minas.");
                     }
 
+                    // Habilitar el botón de cashout claramente
+                    if (cashoutButton != null) {
+                        cashoutButton.setText("COBRAR");
+                        cashoutButton.setDisable(false);
+                    }
+
                     // Procesar el primer clic ahora que el juego está configurado
                     showGem(button);
+
+                    // Actualizar las ganancias potenciales después del primer clic
+                    updatePotentialWinnings();
+
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Error al iniciar el juego: " + e.getMessage(), e);
                     showAlert(Alert.AlertType.ERROR, "Error", "Ocurrió un error al iniciar el juego: " + e.getMessage());
@@ -363,9 +390,18 @@ public class MinesGameController {
         // Deshabilitar el botón para que no se pueda volver a hacer clic
         button.setDisable(true);
 
-        // Aumentar multiplicador
+        // Calcular y actualizar el multiplicador DESPUÉS de revelar la gema
         currentMultiplier = calculateMultiplier();
-        updatePotentialWinnings();
+
+        LOGGER.info("Gema revelada. Nuevo multiplicador: " + currentMultiplier);
+
+        // Asegurar que la UI se actualice
+        Platform.runLater(this::updatePotentialWinnings);
+
+        // Habilitar el botón de cashout, ya que ahora el jugador puede decidir retirarse
+        if (cashoutButton != null) {
+            cashoutButton.setDisable(false);
+        }
     }
 
     /**
@@ -395,7 +431,14 @@ public class MinesGameController {
             double winnings = currentBet * currentMultiplier;
             // Redondear a 2 decimales para evitar errores de precisión
             BigDecimal bd = new BigDecimal(winnings).setScale(2, RoundingMode.HALF_UP);
-            potentialWinningsLabel.setText(String.format("%.2f", bd.doubleValue()));
+            String formattedValue = String.format("%.2f", bd.doubleValue());
+
+            LOGGER.info("Actualizando ganancias potenciales: " + formattedValue +
+                    " (Apuesta: " + currentBet + ", Multiplicador: " + currentMultiplier + ")");
+
+            potentialWinningsLabel.setText(formattedValue);
+        } else {
+            LOGGER.warning("potentialWinningsLabel es null, no se puede actualizar");
         }
     }
 
@@ -419,6 +462,8 @@ public class MinesGameController {
      */
     @FXML
     public void handleCashoutButtonAction(ActionEvent event) {
+        LOGGER.info("Botón de cashout presionado");
+
         if (updateInProgress) {
             LOGGER.info("Operación en progreso, ignorando clic en SALIR");
             return;
@@ -428,12 +473,17 @@ public class MinesGameController {
 
         try {
             if (gameStarted && firstCellClicked) {
+                LOGGER.info("Finalizando juego con victoria (cashout)");
                 // Finalizar el juego con victoria
                 endGame(true);
             } else {
+                LOGGER.info("Juego no iniciado, navegando al dashboard");
                 // Si no ha comenzado, volver al dashboard
                 navigateToDashboard();
             }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error en handleCashoutButtonAction: " + e.getMessage(), e);
+            showAlert(Alert.AlertType.ERROR, "Error", "Ocurrió un error al procesar la acción: " + e.getMessage());
         } finally {
             updateInProgress = false;
         }
@@ -441,6 +491,7 @@ public class MinesGameController {
 
     /**
      * Finaliza el juego actual.
+     *
      * @param isWin true si el jugador ganó, false si perdió
      */
     private void endGame(boolean isWin) {
@@ -641,4 +692,6 @@ public class MinesGameController {
             }
         });
     }
+
+
 }
